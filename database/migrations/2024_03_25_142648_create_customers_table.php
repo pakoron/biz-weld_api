@@ -15,14 +15,16 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('company_name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->integer('zip')->nullable();
-            $table->char('country', 2)->nullable(); // 国コードを2文字のchar型で保存
-            $table->string('address')->nullable();
-            $table->text('description')->nullable();
+            $table->foreignUuid('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('name')->comment('顧客名');
+            $table->string('company_name')->nullable()->comment('法人名');
+            $table->string('email')->nullable()->comment('メールアドレス');
+            $table->string('phone')->nullable()->comment('電話番号');
+            $table->integer('zip')->nullable()->comment('郵便番号');
+            $table->string('country',50)->nullable()->comment('国');
+            $table->string('prefecture',10)->nullable()->comment('都道府県');
+            $table->string('address')->nullable()->comment('住所');
+            $table->text('description')->nullable()->comment('備考');
             $table->softDeletes();
 
             $table->index('name');
