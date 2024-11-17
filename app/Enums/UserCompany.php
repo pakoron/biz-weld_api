@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum UserCompany: int
+enum UserBelong: int
 {
     case OLIM_GARAGE = 1;
 }

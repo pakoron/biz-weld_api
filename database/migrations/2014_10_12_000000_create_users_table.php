@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('user_company_id')->comment('利用者企業ID');
+            $table->integer('user_belong_id')->comment('利用者所属ID');
             $table->string('name');
             $table->string('role')->default('user')->comment('user, admin');
             $table->string('email')->unique();
