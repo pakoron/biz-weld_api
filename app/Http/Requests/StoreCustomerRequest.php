@@ -25,7 +25,8 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:customers',
+            'email' => 'nullable|string|email|max:255',
+            // 'email' => 'nullable|string|email|max:255|unique:customers',//顧客情報は特にユニーク情報必要ないか？更新の時にややこしい
             'phone' => 'nullable|string|max:255',
             'company_name' => 'nullable|string|max:255',
             'zip' => 'nullable|integer',

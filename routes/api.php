@@ -25,4 +25,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //     });
 // });
 
-Route::apiResource('customer', 'App\Http\Controllers\CustomerController');
+// Route::apiResource('customer', 'App\Http\Controllers\CustomerController');
+
+// 認証を必要としないルートグループ
+Route::group([], function () {
+    Route::apiResource('customer', 'App\Http\Controllers\CustomerController');
+});
+
+

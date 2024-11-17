@@ -17,7 +17,6 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        // return response()->json($customers);
         return response()->json(CustomerResource::collection($customers));
     }
 
@@ -59,18 +58,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return response()->json($customer);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UpdateCustomerRequest $request,Customer $customer)
-    {
-        $customer->update($request->all());
+        return response()->json(CustomerResource::make($customer));
     }
 
     /**

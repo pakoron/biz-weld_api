@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('name')->comment('顧客名');
-            $table->string('company_name')->nullable()->comment('法人名');
+            $table->integer('user_company_id')->comment('利用者企業ID');
+            $table->string('name')->comment('顧客名')->index();
+            $table->string('company_name')->nullable()->comment('法人名')->index();
+            $table->string('invoice_number')->nullable()->comment('請求番号');
             $table->string('email')->nullable()->comment('メールアドレス');
             $table->string('phone')->nullable()->comment('電話番号');
             $table->integer('zip')->nullable()->comment('郵便番号');
@@ -26,9 +27,6 @@ return new class extends Migration
             $table->string('address')->nullable()->comment('住所');
             $table->text('description')->nullable()->comment('備考');
             $table->softDeletes();
-
-            $table->index('name');
-
             $table->timestamps();
         });
     }
