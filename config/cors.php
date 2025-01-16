@@ -33,7 +33,11 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,  // クレデンシャル（認証情報）付きのリクエストを許可
+//     Bearer トークンを Authorization ヘッダー に付与して認証を行っているため、Cookie による認証情報の送信が不要 です。この場合、
+// 	•	Cookie を使わない（＝クレデンシャルを渡さない）
+// 	•	認証は トークンヘッダー だけで完結する
+// 　　　という理由で、supports_credentials を false にしている
+    'supports_credentials' => false,  // クレデンシャル（認証情報）付きのリクエストを許可しない
 ];
 
 

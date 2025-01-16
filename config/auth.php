@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [ // API用の認証ガード
+            'driver' => 'passport', // Passportドライバーを使用
+            'provider' => 'users', // ユーザープロバイダーはusers
+            //ユーザープロバイダーは、アプリケーションがユーザー情報をデータベースや他のストレージから取得するための仕組み。これにより、認証やユーザー管理が可能。
+        ],
     ],
 
     /*
@@ -107,5 +112,8 @@ return [
     */
 
     'password_timeout' => 10800,
+
+
+
 
 ];
