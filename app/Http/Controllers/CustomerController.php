@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use App\Http\Resources\CustomerResource;
 
 class CustomerController extends Controller
 {
@@ -16,18 +17,8 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return response()->json($customers);
+        return response()->json(CustomerResource::collection($customers));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function create()
-    // {
-    //     //
-    // }
 
     /**
      * Store a newly created resource in storage.
@@ -37,9 +28,27 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        $customer = new Customer();
-        $customer->create($request->all());
+        \Log::info($request->all()); // リクエストの内容をログに記録
+        $userId = \Auth::id(); // 現在ログインしているユーザーのIDを取得
+        $request->user_id=$userId;
+        // validated() の結果に user_id を追加してマージする
+        $validatedData = array_merge($request->validated(), ['user_id' => $userId]);
+
+        $customer = Customer::create($validatedData);
+
+        if ($customer) {
+            return response()->json([
+                'message' => '顧客の作成に成功しました',
+                // 'data' => $customer
+                'data' => CustomerResource::make($customer)
+            ], 200); // 201は作成成功のステータスコード
+        } else {
+            return response()->json([
+                'message' => 'エラーが発生しました'
+            ], 500); // 500はサーバーエラーのステータスコード
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -47,21 +56,10 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    // public function show(Customer $customer)
-    // {
-    //     //
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit(Customer $customer)
-    // {
-    //     //
-    // }
+    public function show(Customer $customer)
+    {
+        return response()->json(CustomerResource::make($customer));
+    }
 
     /**
      * Update the specified resource in storage.
