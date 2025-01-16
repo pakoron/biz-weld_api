@@ -23,8 +23,6 @@ class UpdateCustomerRequest extends StoreCustomerRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        return parent::rules();
     }
 }

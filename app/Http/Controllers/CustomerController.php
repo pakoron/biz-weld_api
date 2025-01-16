@@ -6,9 +6,13 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use App\Http\Resources\CustomerResource;
-
+use App\UseCase\CustomerUseCase;
 class CustomerController extends Controller
 {
+    public function __construct(
+        private CustomerUseCase $customerUseCase
+    ) {}
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
+        $customers = $this->customerUseCase->getCustomerList();
         return response()->json(CustomerResource::collection($customers));
     }
 
@@ -29,24 +33,8 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         \Log::info($request->all()); // リクエストの内容をログに記録
-        $userId = \Auth::id(); // 現在ログインしているユーザーのIDを取得
-        $request->user_id=$userId;
-        // validated() の結果に user_id を追加してマージする
-        $validatedData = array_merge($request->validated(), ['user_id' => $userId]);
-
-        $customer = Customer::create($validatedData);
-
-        if ($customer) {
-            return response()->json([
-                'message' => '顧客の作成に成功しました',
-                // 'data' => $customer
-                'data' => CustomerResource::make($customer)
-            ], 200); // 201は作成成功のステータスコード
-        } else {
-            return response()->json([
-                'message' => 'エラーが発生しました'
-            ], 500); // 500はサーバーエラーのステータスコード
-        }
+        $validatedData = $request->validated();
+        return $this->customerUseCase->createCustomer($validatedData);
     }
 
 
@@ -70,7 +58,9 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        $customer->update($request->all());
+
+        $validatedData = $request->validated();
+        return $this->customerUseCase->updateCustomer($customer, $validatedData);
     }
 
     /**

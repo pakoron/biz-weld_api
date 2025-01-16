@@ -34,7 +34,7 @@ class StoreCustomerRequest extends FormRequest
             'prefecture' => 'nullable|string|max:10',
             'address' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'user_id' => 'nullable|exists:users,id',
+            // 'user_id' => 'nullable|exists:users,id',
         ];
     }
 }

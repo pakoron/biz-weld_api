@@ -22,7 +22,7 @@ class CustomerSeeder extends Seeder
         $user = User::first();
 
         Customer::factory(10)->create([
-            'user_id' => $user->id, // 存在する user_id を設定
+            'user_belong_id' => $user->user_belong_id,
         ]);
     }
 }
