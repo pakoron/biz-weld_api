@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_company_id')->comment('利用者企業ID');
+            $table->integer('user_belong_id')->comment('利用者所属ID');
             $table->string('name')->comment('顧客名')->index();
             $table->string('company_name')->nullable()->comment('法人名')->index();
             $table->string('invoice_number')->nullable()->comment('請求番号');
